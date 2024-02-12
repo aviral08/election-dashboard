@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 app = Flask(__name__)
 
-data_path = r'C:\Users\pc\Downloads\output_flattened.xlsx'
+data_path = 'output_flattened.xlsx'
 
 data = pd.read_excel(data_path)
 @app.route('/')
