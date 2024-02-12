@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+body {
+font-family: 'Arial', sans-serif;
+margin: 0;
+padding: 0;
+background-color: #f4f4f4;
+color: #333;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.container {
+width: 80%;
+max-width: 960px;
+margin: 20px auto;
+background-color: #fff;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.chart-container {
+width: 70%;
+height: auto;
+margin: 0 auto;
+padding: auto;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+display: flex;
+justify-content: left;
+align-items: center;
+}
+.plotly-graph-embed {
+width: 100%;
+height: 100%;
+}
+h1 {
+color: #333;
+}
+form {
+margin-bottom: 20px;
+}
+label {
+margin-right: 10px;
+}
+input[type="submit"] {
+background-color: #007bff;
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 5px;
+cursor: pointer;
+}
+input[type="submit"]:hover {
+background-color: #0056b3;
+}
+.top-bar {
+width: 100%;
+padding: 20px;
+background-color: #f8f9fa;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.ac-name h2,
+.ac-name p {
+margin: 0;
+padding: 0;
+color: #333;
+}
+.container-header {
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 20px;
+background-color: #659DBD;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+position: relative;
+margin-bottom: 20px;
+}
+.header-info {
+text-align: left;
+padding: 10px 0px;
+}
+
+.header-info h2,
+.header-info p {
+margin: 0;
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="container-header">
+<h1>Election Analytics Dashboard</h1>
+</div>
+<div class="header-info">
+<h2>AC Name: Etmadpur (Agra)</h2>
+<p>Total {{ 'Male' if gender == 'male' else 'Female' if gender == 'female' else 'Overall' }} Turnout: {{ selected_turnout }}</p>
+<p>Total Turnout: {{ total_turnout }}</p>
+</div>
+<form method="post" action="#chart-container">
+<div>
+<label>View:</label>
+<input type="radio" id="top" name="selection" value="top" {{ 'checked' if selection == 'top' else '' }}>
+<label for="top">Top</label>
+<input type="radio" id="bottom" name="selection" value="bottom" {{ 'checked' if selection == 'bottom' else '' }}>
+<label for="bottom">Bottom</label>
+</div>
+<div>
+<label>Gender:</label>
+<input type="radio" id="male" name="gender" value="male" {{ 'checked' if gender == 'male' else '' }}>
+<label for="male">Male</label>
+<input type="radio" id="female" name="gender" value="female" {{ 'checked' if gender == 'female' else '' }}>
+<label for="female">Female</label>
+<input type="radio" id="overall" name="gender" value="overall" {{ 'checked' if gender == 'overall' else '' }}>
+<label for="overall">Overall</label>
+</div>
+<label for="N">Enter Number of Records to display:</label>
+<input type="number" id="N" name="N" value="{{ N }}" min="1">
+<input type="submit" value="Submit">
+</form>
+</div>
+
+<div class="chart-container" id="chart-container" >
+<script>
+var graphJSON = JSON.parse('{{ graphJSON | safe }}');
+Plotly.newPlot('chart-container', graphJSON.data, graphJSON.layout, {responsive: true});
+</script>
+</div>
+<div class="chart-text">
+<p>Based on data from Form 20 available on ceouttarpradesh.nic.in.</p>
+</div>
+
+</body>
+</html>
